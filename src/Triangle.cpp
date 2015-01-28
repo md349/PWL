@@ -1,6 +1,8 @@
 #include "Triangle.h"
 #include <ngl/Util.h>
+#include <iostream>
 
+#define EPSILON 0.000001
 
 //From Jon Macey's Ray-Triangle Collision Demo.
 //Modified for this project.
@@ -31,7 +33,6 @@ namespace pwl
 
   void Triangle::rayTriangleIntersect(ngl::Vec3 _rayStart, ngl::Vec3 _rayEnd)
   {
-    m_hit = false;
     //calc ray direction
     ngl::Vec3 dir = _rayEnd - _rayStart;
 
@@ -43,7 +44,7 @@ namespace pwl
     //calculate the determinant
     det = m_edge1.dot(pvec);
     //if 0 we have no hit
-    if(det > - 0.00001f && det < 0.00001)
+    if(det > -0.00001f && det < 0.00001f)
     {
       return;
     }
@@ -64,7 +65,7 @@ namespace pwl
     qvec = tvec.cross(m_edge1);
     //get dot product
     m_v = dir.dot(qvec) * inv_det;
-    //if out of range 0-1 no hit
+    //if out of range 0-1 no		trans. hit
     if(m_v < -0.001f || m_u + m_v > 1.001f)
     {
       return;
@@ -78,27 +79,20 @@ namespace pwl
       return;
     }
 
-    //otherwise we are inside the triangle
-    //we can get the hit point.
-
     //calculate the normal
     ngl::Vec3 norm = ngl::calcNormal(m_v0, m_v1, m_v2);
     float a = -norm.dot(tvec);
     float b = norm.dot(dir);
     float r = a/b;
     //work out the intersection point of ray and change the hit bool
-    m_hitPoint = _rayStart + r * dir;
+    m_hitPoint = _rayStart + (r * dir);
+    //std::cout<<"m_hitpoint : ["<<m_hitPoint[0]<<", "<<m_hitPoint[1]<<", "<<m_hitPoint[2]<<"]\n";
     m_hit = true;
   }
 
-  ngl::Vec3 Triangle::getHitPoint()
+  void Triangle::reset()
   {
-    return m_hitPoint;
-  }
-
-  bool Triangle::getIntersectBool()
-  {
-    return m_hit;
+    m_hit = false;
   }
 
   Triangle::~Triangle()
@@ -106,18 +100,3 @@ namespace pwl
 
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

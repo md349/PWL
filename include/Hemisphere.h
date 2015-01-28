@@ -4,6 +4,8 @@
 #include <ngl/Vec3.h>
 #include <ngl/BBox.h>
 #include "GTon.h"
+#include "Surfel.h"
+#include "Triangle.h"
 
 namespace pwl
 {
@@ -18,7 +20,14 @@ namespace pwl
       //place gammatons into a hemisphere
       void create(ngl::BBox _bbox, int _numGtons);
 
-      void propagate(ngl::BBox _bbox);
+      //ray trace hem gammatons
+      void propagate(std::vector <Triangle> _triInfo);
+
+      //repeat trace after initial impact
+      void repeatProp(std::vector <Triangle> _triInfo);
+
+      //transfer data between surfel and gammaton
+      void transfer(std::vector <Surfel> _surf);
 
       std::vector <GTon> getHem() { return m_gammatons; }
 

@@ -15,24 +15,24 @@ namespace pwl
       ~Surfel();
 
       //setup initial surfel properties.
-      void setup(ngl::Vec3 _position);
+      void setup(ngl::Vec3 _position, ngl::Vec3 _rayEnd);
 
       //returns surfel position
-      ngl::Vec3 getPos() { return m_pos; }
+      inline ngl::Vec3 getPos() { return m_pos; }
       //update surfel position
-      void updatePos(ngl::Vec3 _newPos) { m_pos = _newPos; }
+      inline void updatePos(ngl::Vec3 _newPos) { m_pos = _newPos; }
+
+      //returns Ray start point
+      inline ngl::Vec3 getRayStart() { return m_rayStart; }
 
       //returns whether we have intersected or not
-      bool getIntersect() { return m_intersect; }
+      inline bool getIntersect() { return m_intersect; }
       //update intersect bool
-      void updateInt(bool _newBool) { m_intersect = _newBool; }
+      inline void updateInt(bool _newBool) { m_intersect = _newBool; }
 
       //returns surfels child nodes. returns -1 if it is a leaf node
       int getRightChildIndex() { return m_right; }
       int getLeftChildIndex() { return m_left; }
-
-      //allows surfels to travel from bbox to object.
-      void propagate(ngl::Vec3 _bboxCentre, std::vector <Triangle> _triInfo);
 
     private:
       //properties of a surfel
@@ -47,9 +47,12 @@ namespace pwl
       float m_sd; //dirt
       float m_sf; //fungus is not implemented yet
 
-      ngl::Vec3 m_pos; //surfel position
+      ngl::Vec3 m_pos; //surfel position also ray start
 
       bool m_intersect; //intersected or not?
+
+      //Rays start from the center of obj
+      ngl::Vec3 m_rayStart;
 
       //index for nodes right and left of this surfel in kd-tree
       int m_right;

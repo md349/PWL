@@ -2,6 +2,7 @@
 #define GTON_H
 
 #include <ngl/Vec3.h>
+#include "Triangle.h"
 
 namespace pwl
 {
@@ -17,7 +18,8 @@ namespace pwl
       void setup(ngl::Vec3 _position);
 
       //returns surfel position
-      ngl::Vec3 getPos() { return m_pos; }
+      inline ngl::Vec3 getPos() { return m_pos; }
+
       //update surfel position
       void updatePos(ngl::Vec3 _newPos) { m_pos = _newPos; }
 
@@ -27,10 +29,7 @@ namespace pwl
       void updateInt(bool _newBool) { m_intersect = _newBool; }
 
       //initial propagate for vertical
-      void propagateVert();
-
-      //initial propagate for Hemisphere
-      void propagateHem(ngl::Vec3 _bboxCentre);
+      void propagate(ngl::Vec3 _rayEnd, std::vector<Triangle> _triInfo);
 
      private:
 

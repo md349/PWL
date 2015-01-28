@@ -3,7 +3,7 @@
 
 #include <ngl/Vec3.h>
 
-//From Jon Macey's Ray-Triangle Collision Demo.
+//From Jon Macey's Ray-Triangle Collision Demo and wikipedia
 //Modified for this project.
 //This is a Moller-Trumbore method
 namespace pwl
@@ -17,14 +17,22 @@ namespace pwl
       //destructor
       ~Triangle();
 
+      inline ngl::Vec3 getV0() { return m_v0; }
+      inline ngl::Vec3 getV1() { return m_v1; }
+      inline ngl::Vec3 getV2() { return m_v2; }
+
       //method to check for ray-triangle intersection
       void rayTriangleIntersect(ngl::Vec3 _rayStart, ngl::Vec3 _rayEnd);
 
-      //returns true or false if the ray has intersected a triangle
-      bool getIntersectBool();
+      void reset();
+
+      //returns true or false ifthe ray has intersected a triangle
+      inline bool getIntersectBool() { return m_hit; }
 
       //returns hitpoint so position can be updated
-      ngl::Vec3 getHitPoint();
+      inline ngl::Vec3 getHitPoint() { return m_hitPoint; }
+
+      inline float getDepth() { return m_rayDepth; }
 
     private:
       //triangle vertices
@@ -47,6 +55,10 @@ namespace pwl
       ngl::Real m_w;
       //actual hit point of ray on tri...needed for surfel position
       ngl::Vec3 m_hitPoint;
+
+      //holds rayDepth
+      float m_rayDepth;
+
   };
 }
 #endif // TRIANGLE_H

@@ -61,12 +61,25 @@ namespace pwl
     }
   }
 
-  void Hemisphere::propagate(ngl::BBox _bbox)
+  void Hemisphere::propagate(std::vector <Triangle> _triInfo)
   {
+    //go through each gammaton
     for(unsigned int i = 0; i < m_gammatons.size(); ++i)
     {
-      m_gammatons[i].propagateHem(_bbox.center());
+      //create the ray end.
+      ngl::Vec3 rayEnd = m_gammatons[i].getPos();
+      m_gammatons[i].propagate(rayEnd, _triInfo);
     }
+  }
+
+  void Hemisphere::transfer(std::vector <Surfel> _surf)
+  {
+
+  }
+
+  void Hemisphere::repeatProp(std::vector <Triangle> _triInfo)
+  {
+
   }
 
   //destructor

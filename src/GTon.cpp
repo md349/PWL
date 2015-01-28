@@ -29,53 +29,27 @@ namespace pwl
     m_intersect = false; //initially we have not intersected with anything
   }
 
-  void GTon::propagateVert()
+  void GTon::propagate(ngl::Vec3 _rayEnd, std::vector <Triangle> _triInfo)
   {
-    //counting variable
-    float t = 0.0f;
-    //we want to go down
-    ngl::Vec3 destination;
-    destination[0] = m_pos[0];
-    destination[1] = 0;
-    destination[2] = m_pos[2];
-
-    //keep moving until we intersect
-    while(!m_intersect)
+    for(unsigned int i = 0; i < _triInfo.size(); ++i)
     {
-      //update position
-      m_pos = (m_pos * (1 - t) + destination * t);
-      if(m_pos[1] < 0 || m_pos[1] > 0)
+      if(!m_intersect)
       {
-        t += 0.01f;
-      }
-      else
-      {
-        m_intersect = true;
+        _triInfo[i].rayTriangleIntersect(m_pos, _rayEnd);
+        bool check = _triInfo[i].getIntersectBool();
+        //std::cout<<"check : "<<check<<" loop num : "<<i<<"\n";
+        if(check)
+        {
+          m_pos = _triInfo[i].getHitPoint();
+          m_intersect = true;
+          break;
+        }
       }
     }
-  }
-
-  void GTon::propagateHem(ngl::Vec3 _bboxCentre)
-  {
-    //increase t to interpolate
-    float t = 0.0f;
-    //centre is an ngl::Vec3 fot the centre of BBox
-    ngl::Vec3 destination = _bboxCentre;
-
-    /**
-    while(!m_intersect)
+    if(!m_intersect)
     {
-      //pwl::Intersect intr;
-      m_pos = (m_pos * (1 - t) + destination * t);
-      if()
-      {
-        m_intersect = true;
-      }
-      else
-      {
-        t += 0.01f;
-      }
-    }**/
+      //m_pos = _rayEnd;
+    }
   }
 
   GTon::~GTon()

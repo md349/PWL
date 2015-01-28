@@ -43,13 +43,27 @@ namespace pwl
       std::cout<<"gamma ton vector size : "<<m_gammatons.size()<<"\n";
   }
 
-  void Vertical::propagate()
+ void Vertical::propagate(std::vector <Triangle> _triInfo)
   {
     for(unsigned int i = 0; i < m_gammatons.size(); ++i)
     {
-      m_gammatons[i].propagateVert();
+      //get gammaton position
+      ngl::Vec3 rayEnd = m_gammatons[i].getPos();
+      //we want to travel downwards, set rayEnd for y = 0
+      rayEnd[1] = 0;
+      m_gammatons[i].propagate(rayEnd, _triInfo);
     }
   }
+
+ void Vertical::repeatProp(std::vector <Triangle> _triInfo)
+ {
+
+ }
+
+ void Vertical::transfer(std::vector<Surfel> _surf)
+ {
+
+ }
 
   Vertical::~Vertical()
   {

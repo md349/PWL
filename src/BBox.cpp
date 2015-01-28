@@ -11,8 +11,9 @@ namespace pwl
     std::cout<<"BBox successfully constructed\n";
   }
 
-  void BBox::create(ngl::BBox _bbox, int _numSurfels)
+  void BBox::create(ngl::BBox _bbox, int _numSurfels, ngl::Vec3 _rayStart)
   {
+
     //we have six faces here so we need six halton sequences
     ngl::Random *rand=ngl::Random::instance();
 
@@ -26,15 +27,15 @@ namespace pwl
     //create surfels for top face
     for(int i = 0; i < _numSurfels; ++i)
     {
-      pwl::Surfel surf;
       //get position from halton sequence
       ngl::Vec3 position; //= top.getHSeq(i);
       //edit height so it is above object
-      position[0] = rand->randomNumber(width);
+      position[0] = rand->randomNumber(length);
       position[1] = height;
-      position[2] = rand->randomNumber(length);
+      position[2] = rand->randomNumber(width);
       //setup surfel
-      surf.setup(position);
+      pwl::Surfel *surf = new pwl::Surfel;
+      surf->setup(position, _rayStart);
       //add to vector
       m_surfels.push_back(surf);
     }
@@ -45,15 +46,15 @@ namespace pwl
     //create surfels for bottom face
     for(int i = 0; i < _numSurfels; ++i)
     {
-      pwl::Surfel surf;
       //get position from halton sequence
       ngl::Vec3 position; //= bottom.getHSeq(i);
-      //edit height so it is above object
-      position[0] = rand->randomNumber(width);
+      //edit so it is below object
+      position[0] = rand->randomNumber(length);
       position[1] = -height;
-      position[2] = rand->randomNumber(length);
+      position[2] = rand->randomNumber(width);
       //setup surfel
-      surf.setup(position);
+      pwl::Surfel *surf = new pwl::Surfel;
+      surf->setup(position, _rayStart);
       //add to vector
       m_surfels.push_back(surf);
     }
@@ -64,15 +65,15 @@ namespace pwl
     //create surfels for front face
     for(int i = 0; i < _numSurfels; ++i)
     {
-      pwl::Surfel surf;
       //get position from halton sequence
       ngl::Vec3 position; //= front.getHSeq(i);
-      //edit height so it is above object
-      position[0] = rand->randomNumber(width);
+      //edit so it is in front of object
+      position[0] = rand->randomNumber(length);
       position[1] = rand->randomNumber(height);
       position[2] = length;
       //setup surfel
-      surf.setup(position);
+      pwl::Surfel *surf = new pwl::Surfel;
+      surf->setup(position,_rayStart);
       //add to vector
       m_surfels.push_back(surf);
     }
@@ -83,15 +84,15 @@ namespace pwl
     //create surfels for back face
     for(int i = 0; i < _numSurfels; ++i)
     {
-      pwl::Surfel surf;
       //get position from halton sequence
       ngl::Vec3 position; //= back.getHSeq(i);
-      //edit height so it is above object
-      position[0] = rand->randomNumber(width);
+      //edit so it is behind object
+      position[0] = rand->randomNumber(length);
       position[1] = rand->randomNumber(height);
       position[2] = -length;
       //setup surfel
-      surf.setup(position);
+      pwl::Surfel *surf = new pwl::Surfel;
+      surf->setup(position, _rayStart);
       //add to vector
       m_surfels.push_back(surf);
     }
@@ -102,15 +103,15 @@ namespace pwl
     //create surfels for left face
     for(int i = 0; i < _numSurfels; ++i)
     {
-      pwl::Surfel surf;
       //get position from halton sequence
       ngl::Vec3 position; // = left.getHSeq(i);
-      //edit height so it is above object
+      //edit so it is left of object
       position[0] = -width;
       position[1] = rand->randomNumber(height);
-      position[2] = rand->randomNumber(length);
+      position[2] = rand->randomNumber(width);
       //setup surfel
-      surf.setup(position);
+      pwl::Surfel *surf = new pwl::Surfel;
+      surf->setup(position, _rayStart);
       //add to vector
       m_surfels.push_back(surf);
     }
@@ -121,34 +122,62 @@ namespace pwl
     //create surfels for right face
     for(int i = 0; i < _numSurfels; ++i)
     {
-      pwl::Surfel surf;
       //get position from halton sequence
       ngl::Vec3 position; //= right.getHSeq(i);
-      //edit height so it is above object
+      //edit so it is right of object
       position[0] = width;
       position[1] = rand->randomNumber(height);
-      position[2] = rand->randomNumber(length);
+      position[2] = rand->randomNumber(width);
       //setup surfel
-      surf.setup(position);
+      pwl::Surfel *surf = new pwl::Surfel;
+      surf->setup(position, _rayStart);
       //add to vector
       m_surfels.push_back(surf);
     }
   }
 
-  bool sortFunc(pwl::Surfel i, pwl::Surfel j)
+  void BBox::goToSurface(std::vector <Triangle> _triInfo)
   {
-    ngl::Vec3 tempi = i.getPos();
-    ngl::Vec3 tempj = j.getPos();
-
-    return (tempi[0]>tempj[0]);
-  }
-
-  void BBox::goToSurface(ngl::BBox _bbox, std::vector <Triangle> _triInfo)
-  {
+    //loop through all surfels
     for(unsigned int i = 0; i < m_surfels.size(); ++i)
     {
-      m_surfels[i].propagate(_bbox.center(), _triInfo);
+      //for each surfel check all triangles
+      for(unsigned int j= 0; j < _triInfo.size(); ++j)
+      {
+        //if the surfel has not intersected with anything check next tri
+        if(m_surfels[i]->getIntersect() == false)
+        {
+          _triInfo[j].rayTriangleIntersect(m_surfels[i]->getRayStart(), m_surfels[i]->getPos());
+          bool hit = _triInfo[j].getIntersectBool();
+          //if the surfel has hit this time update position and break
+          if(hit)
+          {
+            m_surfels[i]->updateInt(true);
+            m_surfels[i]->updatePos(_triInfo[j].getHitPoint());
+          }
+          //if we have reached the end of the tri vector and we still haven't hit then we don't hit
+          else if (i == _triInfo.size()-1 && !hit)
+          {
+            //default position
+            m_surfels[i]->updatePos(ngl::Vec3(1,1,1));
+          }
+        }
+      }
+
+      //reset the triangle. Vital...do not delete. I learnt the hard way!
+      for(unsigned int k = 0; k < _triInfo.size(); ++k)
+      {
+        _triInfo[k].reset();
+      }
     }
+  }
+
+  bool sortFunc(pwl::Surfel *i, pwl::Surfel *j)
+  {
+    ngl::Vec3 tempi = i->getPos();
+    ngl::Vec3 tempj = j->getPos();
+
+    return (tempi[0]>tempj[0]);
   }
 
   //derived from pseudocode on wikipedia

@@ -2,8 +2,10 @@
 #define VERTICAL_H
 
 #include "GTon.h"
+#include "Surfel.h"
 #include <ngl/Vec3.h>
 #include <ngl/BBox.h>
+#include "Triangle.h"
 
 namespace pwl
 {
@@ -19,7 +21,13 @@ namespace pwl
       void create(ngl::BBox _bbox, int _numGtons);
 
       //propagate the GTons in space.
-      void propagate();
+      void propagate(std::vector <Triangle> _triInfo);
+
+      //takes current position and updates
+      void repeatProp(std::vector <Triangle> _triInfo);
+
+      //interaction between surfel and gammaton
+      void transfer(std::vector <Surfel> _surf);
 
       std::vector <GTon> getVertical() { return m_gammatons; }
 

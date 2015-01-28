@@ -9,7 +9,7 @@ namespace pwl
     //std::cout<<"Surfel successfully constructed\n";
   }
 
-  void Surfel::setup(ngl::Vec3 _position)
+  void Surfel::setup(ngl::Vec3 _position, ngl::Vec3 _rayStart)
   {
     //FOR NOW deterioration rates are random
     //deterioration rates should conform with material
@@ -29,28 +29,12 @@ namespace pwl
     //boolean whether we have intersected with the object or not
     m_intersect = false;
 
+    //set ray end point
+    m_rayStart = _rayStart;
+
     //set node info
     m_right = -1;
     m_left = -1;
-  }
-
-  void Surfel::propagate(ngl::Vec3 _bboxCentre, std::vector <Triangle> _triInfo)
-  {
-    //centre is an ngl::Vec3 fot the centre of BBox
-    ngl::Vec3 rayEnd = _bboxCentre;
-
-    //loop through triangles and see if we hit anything
-    for(unsigned int i = 0; i < _triInfo.size(); ++i)
-    {
-      _triInfo[i].rayTriangleIntersect(m_pos,rayEnd);
-      bool intersect = _triInfo[i].getIntersectBool();
-      if(intersect == true)
-      {
-        m_intersect = true;
-        m_pos = _triInfo[i].getHitPoint();
-      }
-    }
-
   }
 
   Surfel::~Surfel()
