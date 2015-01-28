@@ -46,6 +46,7 @@ namespace pwl
     //if 0 we have no hit
     if(det > -0.00001f && det < 0.00001f)
     {
+      std::cout<<"NO HIT\n";
       return;
     }
 
@@ -58,6 +59,7 @@ namespace pwl
     //if out of range 0-1 no hit
     if(m_u < -0.001f || m_u > 1.001f)
     {
+      std::cout<<"NO HIT\n";
       return;
     }
 
@@ -68,6 +70,7 @@ namespace pwl
     //if out of range 0-1 no		trans. hit
     if(m_v < -0.001f || m_u + m_v > 1.001f)
     {
+      std::cout<<"NO HIT\n";
       return;
     }
 
@@ -76,6 +79,7 @@ namespace pwl
     //if less than 0 no hit
     if(m_w <= 0)
     {
+      std::cout<<"NO HIT\n";
       return;
     }
 
@@ -86,7 +90,7 @@ namespace pwl
     float r = a/b;
     //work out the intersection point of ray and change the hit bool
     m_hitPoint = _rayStart + (r * dir);
-    //std::cout<<"m_hitpoint : ["<<m_hitPoint[0]<<", "<<m_hitPoint[1]<<", "<<m_hitPoint[2]<<"]\n";
+    std::cout<<"m_hitpoint : ["<<m_hitPoint[0]<<", "<<m_hitPoint[1]<<", "<<m_hitPoint[2]<<"]\n";
     m_hit = true;
   }
 

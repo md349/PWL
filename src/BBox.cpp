@@ -8,7 +8,7 @@ namespace pwl
 {
   BBox::BBox()
   {
-    std::cout<<"BBox successfully constructed\n";
+    //std::cout<<"BBox successfully constructed\n";
   }
 
   void BBox::create(ngl::BBox _bbox, int _numSurfels, ngl::Vec3 _rayStart)
@@ -213,6 +213,6 @@ namespace pwl
 
   BBox::~BBox()
   {
-    std::cout<<"BBox destructed\n";
+    //std::cout<<"BBox destructed\n";
   }
 }

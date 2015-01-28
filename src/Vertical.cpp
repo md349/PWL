@@ -7,7 +7,7 @@ namespace pwl
 {
   Vertical::Vertical()
   {
-    std::cout<<"Vertical successfully constructed\n";
+    //std::cout<<"Vertical successfully constructed\n";
   }
 
   void Vertical::create(ngl::BBox _bbox, int _numGtons)
@@ -55,18 +55,14 @@ namespace pwl
     }
   }
 
- void Vertical::repeatProp(std::vector <Triangle> _triInfo)
+ void Vertical::transfer(std::vector<Surfel *> _surf)
  {
-
- }
-
- void Vertical::transfer(std::vector<Surfel> _surf)
- {
-
+   ngl::Random *rand = ngl::Random::instance();
+   rand->randomPositiveNumber(_surf.size());
  }
 
   Vertical::~Vertical()
   {
-    std::cout<<"Vertical destructed\n";
+    //std::cout<<"Vertical destructed\n";
   }
 }

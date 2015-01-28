@@ -23,11 +23,8 @@ namespace pwl
       //propagate the GTons in space.
       void propagate(std::vector <Triangle> _triInfo);
 
-      //takes current position and updates
-      void repeatProp(std::vector <Triangle> _triInfo);
-
       //interaction between surfel and gammaton
-      void transfer(std::vector <Surfel> _surf);
+      void transfer(std::vector <Surfel *> _surf);
 
       std::vector <GTon> getVertical() { return m_gammatons; }
 

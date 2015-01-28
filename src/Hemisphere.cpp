@@ -2,6 +2,8 @@
 #include <iostream>
 #include <math.h>
 
+#include <ngl/Random.h>
+
 namespace pwl
 {
 
@@ -10,7 +12,7 @@ namespace pwl
   //constructor
   Hemisphere::Hemisphere()
   {
-    std::cout<<"Hemisphere successfully constructed\n";
+    //std::cout<<"Hemisphere successfully constructed\n";
   }
 
   //this code has been derived from http://www.cplusplus.com/forum/general/65476/
@@ -61,30 +63,26 @@ namespace pwl
     }
   }
 
-  void Hemisphere::propagate(std::vector <Triangle> _triInfo)
+  void Hemisphere::propagate(std::vector <Triangle> _triInfo, ngl::Vec3 _rayStart)
   {
     //go through each gammaton
     for(unsigned int i = 0; i < m_gammatons.size(); ++i)
     {
-      //create the ray end.
-      ngl::Vec3 rayEnd = m_gammatons[i].getPos();
-      m_gammatons[i].propagate(rayEnd, _triInfo);
+      //send to check to each tri
+      m_gammatons[i].propagate(_rayStart, _triInfo);
     }
   }
 
-  void Hemisphere::transfer(std::vector <Surfel> _surf)
+  void Hemisphere::transfer(std::vector <Surfel *> _surf)
   {
-
+    ngl::Random *rand = ngl::Random::instance();
+    rand->randomPositiveNumber(_surf.size());
   }
 
-  void Hemisphere::repeatProp(std::vector <Triangle> _triInfo)
-  {
-
-  }
 
   //destructor
   Hemisphere::~Hemisphere()
   {
-    std::cout<<"Hemisphere destructed\n";
+   //std::cout<<"Hemisphere destructed\n";
   }
 }

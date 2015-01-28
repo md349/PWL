@@ -21,13 +21,10 @@ namespace pwl
       void create(ngl::BBox _bbox, int _numGtons);
 
       //ray trace hem gammatons
-      void propagate(std::vector <Triangle> _triInfo);
-
-      //repeat trace after initial impact
-      void repeatProp(std::vector <Triangle> _triInfo);
+      void propagate(std::vector <Triangle> _triInfo, ngl::Vec3 _rayStart);
 
       //transfer data between surfel and gammaton
-      void transfer(std::vector <Surfel> _surf);
+      void transfer(std::vector <Surfel *> _surf);
 
       std::vector <GTon> getHem() { return m_gammatons; }
 
