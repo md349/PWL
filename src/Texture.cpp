@@ -1,6 +1,6 @@
 #include "Texture.h"
 #include <iostream>
-#include "lodepng/include/lodepng.h"
+#include "lodepng/lodepng.h"
 #include <ngl/Random.h>
 #include <math.h>
 
@@ -13,7 +13,7 @@ namespace pwl
     m_height = _height;
 
     //set colours for dirt/rust
-    m_lightRust = ngl::Vec4(247,68,24,255);
+    m_lightRust = ngl::Vec4(200,80,20,255);
     m_darkRust = ngl::Vec4(165,93,53,255);
     m_dirt = ngl::Vec4(131,101,57,255);
 
@@ -49,8 +49,10 @@ namespace pwl
       //rust
       else if(ran == 1)
       {
+        colour.push_back(m_darkRust);
+        /**
         //decide whether dark or light
-        if(mp[0] > 0.16)
+        if(mp[0] > 0.02)
         {
           colour.push_back(m_darkRust);
         }
@@ -58,6 +60,7 @@ namespace pwl
         {
           colour.push_back(m_lightRust);
         }
+        **/
       }
 
       //normalise the data
@@ -81,8 +84,10 @@ namespace pwl
     //sort position by x
     //std::sort(position.begin(), position.end(), sortFunc);
 
+    /**
     std::cout<<"colours size : "<<colour.size()<<"\n";
     std::cout<<"position size : "<<position.size()<<"\n";
+    **/
 
     float highV = 0;
     float lowV = 0;
@@ -130,10 +135,12 @@ namespace pwl
       position[i][1] = int(position[i][1] * m_height);
     }
 
+    /**
     for(unsigned int i = 0; i < position.size(); ++i)
     {
       std::cout<<"position : ["<<position[i][0]<<", "<<position[i][1]<<"] | i : "<<i<<"\n";
     }
+    **/
 
     //Following derived from lodepng examples
     //https://raw.githubusercontent.com/lvandeve/lodepng/master/example_encode.cpp

@@ -35,6 +35,10 @@ unix:LIBS += -L/usr/local/lib
 unix:LIBS += -L/$(HOME)/NGL/lib -l NGL
 INCLUDEPATH += $$(HOME)/NGL/include/
 
+#add sdl
+unix:LIBS += /usr/local/Cellar/sdl/1.2.15/lib -l SDL
+INCLUDEPATH += /usr/local/Cellar/sdl/1.2.15/include
+
 macx:{
         QMAKE_CXXFLAGS+=  -fPIC
         LIBS+= -L/System/Library/Frameworks/OpenGL.framework/Libraries -framework OpenGL
@@ -68,12 +72,12 @@ win32{
 }
 
 SOURCES+= $$PWD/src/*.cpp \
-          $$PWD/lodepng/include/*.cpp
+          $$PWD/lodepng/*.cpp
 
 isEqual(QT_MAJOR_VERSION, 4) {
                         OBJECTIVE_SOURCES += $$SRC_DIR/setGL32VisualMac.mm
 }
 
 HEADERS+=$$PWD/include/*.h \
-         $$PWD/lodepng/include/*.h
+         $$PWD/lodepng/*.h
 

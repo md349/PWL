@@ -183,16 +183,16 @@ namespace pwl
   //derived from pseudocode on wikipedia
   void BBox::setKdTree(int _depth)
   {
+    /**
       int k = 3; //using Vec3 therefore will always be 3 dimensional
       int axis = _depth % k;
 
-      /**
       for(unsigned int i = 0; i < m_surfels.size(); ++i)
       {
         ngl::Vec3 t = m_surfels[i].getPos();
         std::cout<<"["<<t[0]<<", "<<t[1]<<", "<<t[2]<<"]\n";
       }
-      **/
+
       std::cout<<"sorting by x pos...\n";
       std::sort(m_surfels.begin(), m_surfels.end(), sortFunc);
       std::cout<<"sorted!\n";
@@ -200,15 +200,15 @@ namespace pwl
       //choose median
       unsigned int median = m_surfels.size() / 2;
 
-      /**
       for(unsigned int i = 0; i < m_surfels.size(); ++i)
       {
         ngl::Vec3 t = m_surfels[i].getPos();
         std::cout<<"["<<t[0]<<", "<<t[1]<<", "<<t[2]<<"]\n";
-      }**/
+      }
 
       //print function
-      //std::cout<<"surfel postion : ["<<pos[0]<<", "<<pos[1]<<", "<<pos[2]<<"]\n";
+      std::cout<<"surfel postion : ["<<pos[0]<<", "<<pos[1]<<", "<<pos[2]<<"]\n";
+      **/
   }
 
   BBox::~BBox()
