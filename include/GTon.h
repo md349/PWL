@@ -2,6 +2,7 @@
 #define GTON_H
 
 #include <ngl/Vec3.h>
+#include <ngl/Vec2.h>
 #include "Triangle.h"
 
 namespace pwl
@@ -30,6 +31,12 @@ namespace pwl
 
       //initial propagate for vertical
       void propagate(ngl::Vec3 _rayEnd, std::vector<Triangle> _triInfo);
+
+      //returns carrier attributes
+      inline ngl::Vec2 getCA() { return ngl::Vec2(m_sh,m_sd); }
+
+      //update carrier attributes
+      void updateCA(ngl::Vec2 _update);
 
      private:
 

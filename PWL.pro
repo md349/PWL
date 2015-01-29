@@ -67,11 +67,13 @@ win32{
                                 DEFINES += NO_DLL
 }
 
-SOURCES+= $$PWD/src/*.cpp
+SOURCES+= $$PWD/src/*.cpp \
+          $$PWD/lodepng/include/*.cpp
 
 isEqual(QT_MAJOR_VERSION, 4) {
                         OBJECTIVE_SOURCES += $$SRC_DIR/setGL32VisualMac.mm
 }
 
-HEADERS+=$$PWD/include/*.h
+HEADERS+=$$PWD/include/*.h \
+         $$PWD/lodepng/include/*.h
 

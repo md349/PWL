@@ -19,8 +19,8 @@ namespace pwl
     m_kf = rand->randomPositiveNumber(1-(m_ks+m_kp));
 
     //assign values for carrier attributes
-    m_sh = rand->randomPositiveNumber(10); //change input to alter weathering effect
-    m_sd = rand->randomPositiveNumber(10);
+    m_sh = rand->randomPositiveNumber(1); //change input to alter weathering effect
+    m_sd = rand->randomPositiveNumber(1);
     m_sf = 0; //fungus not implemented right now.
 
     //set other attributes
@@ -46,10 +46,12 @@ namespace pwl
         }
       }
     }
-    if(!m_intersect)
-    {
-      //m_pos = _rayEnd;
-    }
+  }
+
+  void GTon::updateCA(ngl::Vec2 _update)
+  {
+    m_sh = _update[0];
+    m_sd = _update[1];
   }
 
   GTon::~GTon()

@@ -37,6 +37,12 @@ namespace pwl
     m_left = -1;
   }
 
+  void Surfel::updateMP(ngl::Vec2 _update)
+  {
+    m_sh = _update[0];
+    m_sd = _update[1];
+  }
+
   Surfel::~Surfel()
   {
     //std::cout<<"Surfel destructed\n";

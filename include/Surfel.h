@@ -2,6 +2,7 @@
 #define SURFEL_H
 
 #include <ngl/Vec3.h>
+#include <ngl/Vec2.h>
 #include "Triangle.h"
 
 namespace pwl
@@ -29,6 +30,12 @@ namespace pwl
       inline bool getIntersect() { return m_intersect; }
       //update intersect bool
       inline void updateInt(bool _newBool) { m_intersect = _newBool; }
+
+      //returns material properties as Vec2
+      inline ngl::Vec2 getMP() { return ngl::Vec2 (m_sh, m_sd); }
+
+      //updates material properties
+      void updateMP(ngl::Vec2 _update);
 
       //returns surfels child nodes. returns -1 if it is a leaf node
       int getRightChildIndex() { return m_right; }
